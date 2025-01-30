@@ -21,8 +21,18 @@ public class Task {
     public String displayDone(){
         return this.isDone ? "[X] " : "[ ] ";
     }
+
     public boolean isDone() {
         return this.isDone;
+    }
+
+    @Override
+    public String toString() {
+        return this.displayDone() + this.taskDescription();
+    }
+
+    public String displayAdd(){
+        return "added: " + this.taskDescription();
     }
 
 

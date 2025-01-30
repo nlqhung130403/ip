@@ -8,13 +8,15 @@ public class Ferb {
 
     private static void add(Task task) {
         list.add(task);
-        System.out.println(Ferb.INDENT + "added: " + task.taskDescription());
+        System.out.println(Ferb.INDENT + "Got it. I've added this task:\n " + INDENT + task.toString());
+        System.out.println(Ferb.INDENT + "Now you have " + list.size() + " tasks in the list.");
     }
 
     private static void list() {
+        System.out.println("Here are the tasks in your list:");
         for (int i = 1; i <= list.size(); i++) {
             Task task = list.get(i-1);
-            System.out.println(INDENT + i + "." + task.displayDone() + task.taskDescription());
+            System.out.println(INDENT + i + "." + task.toString());
         }
     }
 
@@ -38,6 +40,7 @@ public class Ferb {
         //Create a loop for inputs and terminate when bye
         while (true) {
             String command = scanner.nextLine();
+            Task task;
             if (command.equals("bye")) {
                 System.out.println(Ferb.INDENT + "Bye. Hope to see you again soon!");
                 scanner.close();
@@ -53,8 +56,24 @@ public class Ferb {
                 int index = Integer.parseInt(command.substring(5, command.length())) - 1;
                 markDone(index);
                 continue;
+            } else if (command.contains("todo")){
+                task = new ToDo(command.substring(5, command.length()));
+            } else if (command.contains("deadline")) {
+                int i = command.indexOf("/by");
+                String deadline = command.substring(i + 4, command.length());
+                String description = command.substring(9, i-1);
+                task = new Deadline(description, deadline);
+            } else if(command.contains("event")) {
+                int fi = command.indexOf("/from");
+                int ti = command.indexOf("/to");
+                String description = command.substring(6, fi-1);
+                String startDate = command.substring(fi + 6, ti -1);
+                String endDate = command.substring(ti + 4, command.length());
+                task = new Event(description, startDate, endDate);
             }
-            Task task = new Task(command);
+            else {
+                task = new Task(command);
+            }
             Ferb.add(task);
         }
     }
