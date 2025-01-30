@@ -1,6 +1,21 @@
 import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
+
 public class Ferb {
-    private static String INDENT = "    ";
+    private static final String INDENT = "    ";
+    private static List<String> list = new ArrayList<String>();
+
+    private static void add(String command) {
+        list.add(command);
+        System.out.println(Ferb.INDENT + "added: " + command);
+    }
+
+    private static void list() {
+        for (int i = 1; i <= list.size(); i++) {
+            System.out.println(INDENT + i + ". " + list.get(i-1));
+        }
+    }
 
     private static void run(){
         Scanner scanner = new Scanner(System.in);
@@ -12,8 +27,11 @@ public class Ferb {
                 System.out.println(Ferb.INDENT + "Bye. Hope to see you again soon!");
                 scanner.close();
                 break;
+            } else if (command.equals("list")) {
+                list();
+                continue;
             }
-            System.out.println(Ferb.INDENT + command);
+            Ferb.add(command);
         }
     }
 
