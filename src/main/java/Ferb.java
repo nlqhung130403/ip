@@ -4,17 +4,32 @@ import java.util.ArrayList;
 
 public class Ferb {
     private static final String INDENT = "    ";
-    private static List<String> list = new ArrayList<String>();
+    private static List<Task> list = new ArrayList<>();
 
-    private static void add(String command) {
-        list.add(command);
-        System.out.println(Ferb.INDENT + "added: " + command);
+    private static void add(Task task) {
+        list.add(task);
+        System.out.println(Ferb.INDENT + "added: " + task.taskDescription());
     }
 
     private static void list() {
         for (int i = 1; i <= list.size(); i++) {
-            System.out.println(INDENT + i + ". " + list.get(i-1));
+            Task task = list.get(i-1);
+            System.out.println(INDENT + i + "." + task.displayDone() + task.taskDescription());
         }
+    }
+
+    private static void markDone(int index) {
+        Task task = list.get(index);
+        task.markDone();
+        System.out.println(INDENT + "Nice! I have marked this task as done:");
+        System.out.println(INDENT + " " + task.displayDone() + task.taskDescription());
+    }
+
+    private static void unmarkDone(int index) {
+        Task task = list.get(index);
+        task.unmarkDone();
+        System.out.println(INDENT + "OK, I've marked this task as not done yet:");
+        System.out.println(INDENT + " " + task.displayDone() + task.taskDescription());
     }
 
     private static void run(){
@@ -30,8 +45,17 @@ public class Ferb {
             } else if (command.equals("list")) {
                 list();
                 continue;
+            } else if (command.contains("unmark")) {
+                int index = Integer.parseInt(command.substring(7, command.length())) - 1;
+                unmarkDone(index);
+                continue;
+            } else if (command.contains("mark")) {
+                int index = Integer.parseInt(command.substring(5, command.length())) - 1;
+                markDone(index);
+                continue;
             }
-            Ferb.add(command);
+            Task task = new Task(command);
+            Ferb.add(task);
         }
     }
 
