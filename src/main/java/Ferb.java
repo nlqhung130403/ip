@@ -34,10 +34,14 @@ public class Ferb {
         System.out.println(INDENT + " " + task.displayDone() + task.taskDescription());
     }
 
-    private static void commandProcessing (String command) {
-        Task task;
-
+    private static void delete(int index) {
+        Task task = list.get(index - 1);
+        list.remove(index - 1);
+        System.out.println(INDENT + "Noted. I've removed this task: ");
+        System.out.println(INDENT + task.toString());
+        System.out.println(INDENT + "Now you have " + list.size() + " tasks in list");
     }
+
 
     private static void run(){
         Scanner scanner = new Scanner(System.in);
@@ -76,10 +80,16 @@ public class Ferb {
                     String startDate = command.substring(fi + 6, ti - 1);
                     String endDate = command.substring(ti + 4, command.length());
                     task = new Event(description, startDate, endDate);
+                } else if (command.contains("delete")) {
+                    int index = Integer.parseInt(command.substring(7, command.length()));
+                    delete(index);
+                    continue;
                 } else {
                     throw new FerbException();
                 }
                 Ferb.add(task);
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println(INDENT + "Invalid Index! Please try again.");
             } catch (RuntimeException e) {
                 System.out.println(INDENT + "Wrong command format! Please try again.");
             } catch (FerbException e) {
