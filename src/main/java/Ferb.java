@@ -34,47 +34,58 @@ public class Ferb {
         System.out.println(INDENT + " " + task.displayDone() + task.taskDescription());
     }
 
+    private static void commandProcessing (String command) {
+        Task task;
+
+    }
+
     private static void run(){
         Scanner scanner = new Scanner(System.in);
 
         //Create a loop for inputs and terminate when bye
         while (true) {
             String command = scanner.nextLine();
-            Task task;
-            if (command.equals("bye")) {
-                System.out.println(Ferb.INDENT + "Bye. Hope to see you again soon!");
-                scanner.close();
-                break;
-            } else if (command.equals("list")) {
-                list();
-                continue;
-            } else if (command.contains("unmark")) {
-                int index = Integer.parseInt(command.substring(7, command.length())) - 1;
-                unmarkDone(index);
-                continue;
-            } else if (command.contains("mark")) {
-                int index = Integer.parseInt(command.substring(5, command.length())) - 1;
-                markDone(index);
-                continue;
-            } else if (command.contains("todo")){
-                task = new ToDo(command.substring(5, command.length()));
-            } else if (command.contains("deadline")) {
-                int i = command.indexOf("/by");
-                String deadline = command.substring(i + 4, command.length());
-                String description = command.substring(9, i-1);
-                task = new Deadline(description, deadline);
-            } else if(command.contains("event")) {
-                int fi = command.indexOf("/from");
-                int ti = command.indexOf("/to");
-                String description = command.substring(6, fi-1);
-                String startDate = command.substring(fi + 6, ti -1);
-                String endDate = command.substring(ti + 4, command.length());
-                task = new Event(description, startDate, endDate);
+            try {
+                Task task;
+                if (command.equals("bye")) {
+                    System.out.println(Ferb.INDENT + "Bye. Hope to see you again soon!");
+                    scanner.close();
+                    break;
+                } else if (command.equals("list")) {
+                    list();
+                    continue;
+                } else if (command.contains("unmark")) {
+                    int index = Integer.parseInt(command.substring(7, command.length())) - 1;
+                    unmarkDone(index);
+                    continue;
+                } else if (command.contains("mark")) {
+                    int index = Integer.parseInt(command.substring(5, command.length())) - 1;
+                    markDone(index);
+                    continue;
+                } else if (command.contains("todo")) {
+                    task = new ToDo(command.substring(5, command.length()));
+                } else if (command.contains("deadline")) {
+                    int i = command.indexOf("/by");
+                    String deadline = command.substring(i + 4, command.length());
+                    String description = command.substring(9, i - 1);
+                    task = new Deadline(description, deadline);
+                } else if (command.contains("event")) {
+                    int fi = command.indexOf("/from");
+                    int ti = command.indexOf("/to");
+                    String description = command.substring(6, fi - 1);
+                    String startDate = command.substring(fi + 6, ti - 1);
+                    String endDate = command.substring(ti + 4, command.length());
+                    task = new Event(description, startDate, endDate);
+                } else {
+                    throw new FerbException();
+                }
+                Ferb.add(task);
+            } catch (RuntimeException e) {
+                System.out.println(INDENT + "Wrong command format! Please try again.");
+            } catch (FerbException e) {
+                System.out.println(INDENT + "Sorry! Command not supported!");
             }
-            else {
-                task = new Task(command);
-            }
-            Ferb.add(task);
+
         }
     }
 
