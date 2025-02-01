@@ -88,6 +88,8 @@ public class Ferb {
                     throw new FerbException();
                 }
                 Ferb.add(task);
+            } catch (StringIndexOutOfBoundsException e) {
+                System.out.println(INDENT + "Wrong command format! Please double check.");
             } catch (IndexOutOfBoundsException e) {
                 System.out.println(INDENT + "Invalid Index! Please try again.");
             } catch (RuntimeException e) {
