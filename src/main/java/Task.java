@@ -1,9 +1,14 @@
 public class Task {
-    private boolean isDone = false;
+    private boolean isDone;
     private String description;
 
     public Task(String description) {
+        this(false, description);
+    }
+
+    public Task(boolean isDone, String description){
         this.description = description;
+        this.isDone = isDone;
     }
 
     public void markDone() {
@@ -31,8 +36,9 @@ public class Task {
         return this.displayDone() + this.taskDescription();
     }
 
-    public String displayAdd(){
-        return "added: " + this.taskDescription();
+    public String toSave() {
+        String id = this.isDone() ? "1" : "0";
+        return id + "|" + this.taskDescription();
     }
 
 

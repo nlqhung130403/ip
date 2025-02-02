@@ -4,42 +4,65 @@ import java.util.ArrayList;
 
 public class Ferb {
     private static final String INDENT = "    ";
-    private static List<Task> list = new ArrayList<>();
+    private static List<Task> tasks = new ArrayList<>();
+    private static FerbFileHandler fileHandler;
 
     private static void add(Task task) {
-        list.add(task);
+        tasks.add(task);
         System.out.println(Ferb.INDENT + "Got it. I've added this task:\n " + INDENT + task.toString());
-        System.out.println(Ferb.INDENT + "Now you have " + list.size() + " tasks in the list.");
+        System.out.println(Ferb.INDENT + "Now you have " + tasks.size() + " tasks in the list.");
     }
 
     private static void list() {
         System.out.println("Here are the tasks in your list:");
-        for (int i = 1; i <= list.size(); i++) {
-            Task task = list.get(i-1);
+        for (int i = 1; i <= tasks.size(); i++) {
+            Task task = tasks.get(i-1);
             System.out.println(INDENT + i + "." + task.toString());
         }
     }
 
     private static void markDone(int index) {
-        Task task = list.get(index);
+        Task task = tasks.get(index);
         task.markDone();
         System.out.println(INDENT + "Nice! I have marked this task as done:");
         System.out.println(INDENT + " " + task.displayDone() + task.taskDescription());
     }
 
     private static void unmarkDone(int index) {
-        Task task = list.get(index);
+        Task task = tasks.get(index);
         task.unmarkDone();
         System.out.println(INDENT + "OK, I've marked this task as not done yet:");
         System.out.println(INDENT + " " + task.displayDone() + task.taskDescription());
     }
 
     private static void delete(int index) {
-        Task task = list.get(index - 1);
-        list.remove(index - 1);
+        Task task = tasks.get(index - 1);
+        tasks.remove(index - 1);
         System.out.println(INDENT + "Noted. I've removed this task: ");
         System.out.println(INDENT + task.toString());
-        System.out.println(INDENT + "Now you have " + list.size() + " tasks in list");
+        System.out.println(INDENT + "Now you have " + tasks.size() + " tasks in list");
+    }
+
+    private static void initList(String content) {
+        String[] tasks = content.split("\\R");
+
+        for (String task : tasks) {
+            String[] fields = task.split("\\|"); //escape special character
+            String type = fields[0];
+            boolean isDone = fields[1].equals("1") ? true : false;
+            String description = fields[2];
+            if (type.equals("T")) {
+                Ferb.tasks.add(new ToDo(isDone, description));
+            } else if (type.equals("D")) {
+                String deadline = fields[3];
+                Deadline d = new Deadline(isDone, description, deadline);
+                Ferb.tasks.add(d);
+            } else {
+                String from = fields[3];
+                String to = fields[4];
+                Ferb.tasks.add(new Event(isDone, description, from, to));
+            }
+        }
     }
 
 
@@ -103,6 +126,10 @@ public class Ferb {
 
     public static void main(String[] args) {
         System.out.println("Hello! I'm Ferb\nWhat can I do for you?\n");
+        fileHandler = new FerbFileHandler("data/Ferb.txt");
+        String content = fileHandler.readContent();
+        initList(content);
         Ferb.run();
+        fileHandler.writeContent(tasks);
     }
 }

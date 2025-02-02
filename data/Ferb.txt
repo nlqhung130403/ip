@@ -1,0 +1,6 @@
+D|0|project meeting|Aug 6th 2
+D|0|return book|June 6th
+T|1|join sports club
+D|0|play sports|Sunday
+T|1|run
+E|1|play games|4pm|6pm
