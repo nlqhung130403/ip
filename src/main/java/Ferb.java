@@ -128,7 +128,9 @@ public class Ferb {
         System.out.println("Hello! I'm Ferb\nWhat can I do for you?\n");
         fileHandler = new FerbFileHandler("data/Ferb.txt");
         String content = fileHandler.readContent();
-        initList(content);
+        if (!content.isEmpty()) {
+            initList(content);
+        }
         Ferb.run();
         fileHandler.writeContent(tasks);
     }
