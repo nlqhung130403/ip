@@ -7,11 +7,11 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class FerbFileHandler {
-    private String filepath;
+    private String filePath;
     private File file;
 
     public FerbFileHandler(String filepath) {
-        this.filepath = filepath;
+        this.filePath = filepath;
         this.file = new File(filepath);
     }
 
@@ -24,7 +24,7 @@ public class FerbFileHandler {
             if (!file.exists()) {
                 file.createNewFile();
             } else if (file.exists()) {
-                content = new String(Files.readAllBytes(Paths.get(filepath)));
+                content = new String(Files.readAllBytes(Paths.get(filePath)));
             }
         } catch (IOException e) {
             System.err.println("An error occured" + e);
