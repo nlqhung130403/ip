@@ -1,3 +1,7 @@
+package ferb.command;
+import ferb.task.Task;
+import ferb.tasklist.TaskList;
+
 public class UnmarkDoneCommand extends Command {
     private int index;
 

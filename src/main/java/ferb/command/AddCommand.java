@@ -1,3 +1,8 @@
+package ferb.command;
+
+import ferb.task.Task;
+import ferb.tasklist.TaskList;
+
 public class AddCommand extends Command{
     private Task task;
 

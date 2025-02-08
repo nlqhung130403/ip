@@ -1,6 +1,12 @@
-import java.util.Scanner;
-import java.util.List;
-import java.util.ArrayList;
+package ferb;
+
+import ferb.command.*;
+import ferb.exception.FerbException;
+import ferb.parser.Parser;
+import ferb.tasklist.TaskList;
+import ferb.ui.Ui;
+import ferb.filehandler.FerbFileHandler;
+
 
 public class Ferb {
     private TaskList tasks;

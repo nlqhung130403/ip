@@ -1,3 +1,9 @@
+package ferb.command;
+
+import ferb.filehandler.FerbFileHandler;
+import ferb.tasklist.TaskList;
+import ferb.ui.Ui;
+
 public class ExitCommand extends Command{
     private FerbFileHandler fileHandler;
 

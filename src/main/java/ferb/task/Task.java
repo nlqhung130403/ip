@@ -1,3 +1,5 @@
+package ferb.task;
+
 public class Task {
     private boolean isDone;
     private String description;

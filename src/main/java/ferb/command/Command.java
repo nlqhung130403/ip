@@ -1,3 +1,7 @@
+package ferb.command;
+
+import ferb.tasklist.TaskList;
+
 public abstract class Command {
     TaskList tasks;
 

@@ -1,3 +1,11 @@
+package ferb.parser;
+
+import ferb.command.*;
+import ferb.exception.FerbException;
+import ferb.filehandler.FerbFileHandler;
+import ferb.tasklist.TaskList;
+import ferb.task.*;
+
 public class Parser {
     private TaskList tasks;
     private FerbFileHandler fileHandler;
