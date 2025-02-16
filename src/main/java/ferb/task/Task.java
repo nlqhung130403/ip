@@ -43,5 +43,9 @@ public class Task {
         return id + "|" + this.taskDescription();
     }
 
+    public boolean contains(String keyword) {
+        return this.taskDescription().contains(keyword);
+    }
+
 
 }

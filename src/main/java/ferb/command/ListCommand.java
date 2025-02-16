@@ -12,9 +12,6 @@ public class ListCommand extends Command {
     @Override
     public void execute() {
         System.out.println("Here are the tasks in your list:");
-        for (int i = 1; i <= tasks.size(); i++) {
-            Task task = tasks.get(i-1);
-            System.out.println(i + "." + task.toString());
-        }
+        System.out.println(tasks.toString());
     }
 }

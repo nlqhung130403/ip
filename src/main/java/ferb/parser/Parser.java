@@ -43,6 +43,9 @@ public class Parser {
         } else if (command.contains("delete")) {
             int index = Integer.parseInt(command.substring(7, command.length()));
             return new DeleteCommand(this.tasks, index);
+        } else if (command.contains("find")) {
+            String keyword = command.substring(5, command.length());
+            return new FindCommand(this.tasks, keyword);
         } else {
             throw new FerbException();
         }
