@@ -35,4 +35,12 @@ public class Event extends Task{
         String isDone = this.isDone() ? "1" : "0";
         return "E|" + super.toSave() + "|" + this.startDate + "|" + this.endDate;
     }
+
+    public String getTo() {
+        return this.endDate.format(DATEFORMAT);
+    }
+
+    public String getFrom() {
+        return this.startDate.format(DATEFORMAT);
+    }
 }

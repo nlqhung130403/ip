@@ -17,14 +17,14 @@ public class Deadline extends Task{
         this.deadline = LocalDate.parse(deadline);
     }
 
-    public String displayDeadline() {
+    public String getBy() {
         return this.deadline.format(DATEFORMAT);
     }
 
     @Override
     public String toString() {
         return "[D]" + this.displayDone() + this.taskDescription()
-                + " (by: " + this.displayDeadline() + ")";
+                + " (by: " + this.getBy() + ")";
     }
 
     @Override
