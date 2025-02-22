@@ -8,11 +8,19 @@ import ferb.ui.Ui;
 import ferb.filehandler.FerbFileHandler;
 
 
+/**
+ * Represents the main class of the Ferb application.
+ */
 public class Ferb {
     private TaskList tasks;
     private FerbFileHandler fileHandler;
     private Parser parser;
 
+    /**
+     * Constructs a Ferb object with the specified file path.
+     *
+     * @param filePath the file path where the task list is stored
+     */
     public Ferb(String filePath) {
         fileHandler = new FerbFileHandler(filePath);
         String content = fileHandler.readContent();
@@ -24,6 +32,9 @@ public class Ferb {
         parser = new Parser(tasks, fileHandler);
     }
 
+    /**
+     * Runs the Ferb application.
+     */
     private void run(){
         Ui.showWelcome();
         boolean isExit = false;

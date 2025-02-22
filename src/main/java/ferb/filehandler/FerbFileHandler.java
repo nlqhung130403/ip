@@ -9,6 +9,9 @@ import java.nio.file.Paths;
 import java.util.List;
 import ferb.task.Task;
 
+/**
+ * Represents a file handler that reads and writes to a file that stores the data of task list of Ferb.
+ */
 public class FerbFileHandler {
     private String filePath;
     private File file;
@@ -18,7 +21,11 @@ public class FerbFileHandler {
         this.file = new File(filepath);
     }
 
-    // Reads file's content if it exists, else create it
+    /**
+     * Reads the content of the file that stores the previous task list of Ferb.
+     *
+     * @return The content of the file.
+     */
     public String readContent(){
         String content = "";
         try {
@@ -36,6 +43,11 @@ public class FerbFileHandler {
         }
     }
 
+    /**
+     * Writes the content of the task list to the file.
+     *
+     * @param tasks The list of tasks to be written to the file.
+     */
     public void writeContent(List<Task> tasks) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("data/Ferb.txt"))) {
             for (Task task : tasks) {

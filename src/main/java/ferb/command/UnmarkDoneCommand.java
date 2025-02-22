@@ -2,6 +2,9 @@ package ferb.command;
 import ferb.task.Task;
 import ferb.tasklist.TaskList;
 
+/**
+ * Represents a command to unmark a task as done in the task list.
+ */
 public class UnmarkDoneCommand extends Command {
     private int index;
 
@@ -10,6 +13,9 @@ public class UnmarkDoneCommand extends Command {
         this.index = index;
     }
 
+    /**
+     * Executes the unmark done command, unmarking the task as done in the task list and printing a confirmation message.
+     */
     @Override
     public void execute() {
         Task task = tasks.get(this.index);

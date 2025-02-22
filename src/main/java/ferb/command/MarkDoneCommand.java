@@ -3,6 +3,9 @@ package ferb.command;
 import ferb.task.Task;
 import ferb.tasklist.TaskList;
 
+/**
+ * Represents a command to mark a task as done based on its index.
+ */
 public class MarkDoneCommand extends Command {
     private int index;
 
@@ -11,6 +14,9 @@ public class MarkDoneCommand extends Command {
         this.index = index;
     }
 
+    /**
+     * Executes the mark done command, marking the task as done and printing a confirmation message.
+     */
     @Override
     public void execute() {
         Task task = tasks.get(index);

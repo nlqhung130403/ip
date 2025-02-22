@@ -6,6 +6,9 @@ import ferb.filehandler.FerbFileHandler;
 import ferb.tasklist.TaskList;
 import ferb.task.*;
 
+/**
+ * Represents a parser that parses user input into commands.
+ */
 public class Parser {
     private TaskList tasks;
     private FerbFileHandler fileHandler;
@@ -15,6 +18,13 @@ public class Parser {
         this.fileHandler = fileHandler;
     }
 
+    /**
+     * Parses the user input into a command.
+     *
+     * @param command the user input
+     * @return the command to be executed
+     * @throws FerbException if the command is not supported
+     */
     public Command parse(String command) throws FerbException{
         if (command.equals("bye")) {
             return new ExitCommand(this.tasks, fileHandler);
