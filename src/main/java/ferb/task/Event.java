@@ -7,7 +7,7 @@ public class Event extends Task{
 
     private LocalDate startDate;
     private LocalDate endDate;
-    private static final DateTimeFormatter DATEFORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy");
 
     public Event(String description, String startDate, String endDate) {
         this(false, description, startDate, endDate);
@@ -20,7 +20,7 @@ public class Event extends Task{
     }
 
     public static String displayDate(LocalDate date) {
-        return date.format(DATEFORMAT);
+        return date.format(DATE_TIME_FORMATTER);
     }
 
     @Override
@@ -37,10 +37,10 @@ public class Event extends Task{
     }
 
     public String getTo() {
-        return this.endDate.format(DATEFORMAT);
+        return this.endDate.format(DATE_TIME_FORMATTER);
     }
 
     public String getFrom() {
-        return this.startDate.format(DATEFORMAT);
+        return this.startDate.format(DATE_TIME_FORMATTER);
     }
 }

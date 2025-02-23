@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 public class Deadline extends Task{
 
     private LocalDate deadline;
-    private static final DateTimeFormatter DATEFORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy");
 
     public Deadline(String description, String deadline) {
         this(false, description, deadline);
@@ -18,7 +18,7 @@ public class Deadline extends Task{
     }
 
     public String getBy() {
-        return this.deadline.format(DATEFORMAT);
+        return this.deadline.format(DATE_TIME_FORMATTER);
     }
 
     @Override
