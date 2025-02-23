@@ -3,6 +3,9 @@ package ferb.command;
 import ferb.task.Task;
 import ferb.tasklist.TaskList;
 
+/**
+ * Represents a command to delete a task from the task list.
+ */
 public class DeleteCommand extends Command{
     private int index;
 
@@ -11,6 +14,9 @@ public class DeleteCommand extends Command{
         this.index = index;
     }
 
+    /**
+     * Executes the delete command, removing the task from the task list and printing a confirmation message.
+     */
     @Override
     public void execute() {
         Task task = tasks.get(index - 1);
