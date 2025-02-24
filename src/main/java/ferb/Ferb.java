@@ -26,25 +26,34 @@ public class Ferb {
         fileHandler = new FerbFileHandler(filePath);
         String content = fileHandler.readContent();
         if (!content.isEmpty()) {
-            tasks = new TaskList(content);
+            loadTasks(content);
         } else {
-            tasks = new TaskList();
+            loadTasks();
         }
         parser = new Parser(tasks, fileHandler);
+    }
+
+    private void loadTasks(String content) {
+        try {
+            tasks = new TaskList(content);
+        } catch (FerbException e) {
+            ui.showLoadingError();
+            loadTasks();
+        }
+    }
+
+    private void loadTasks() {
+        this.tasks = new TaskList();
     }
 
     public String getResponse(String input) {
         try {
             Command c = this.parser.parse(input);
             c.execute(ui, fileHandler, tasks);
-        } catch (StringIndexOutOfBoundsException e) {
-            return "Wrong command format! Please double check.";
-        } catch (IndexOutOfBoundsException e) {
-            return "Invalid Index! Please try again.";
-        } catch (RuntimeException e) {
-            return "Wrong command format! Please try again.";
         } catch (FerbException e) {
-            return "Sorry! Command not supported!";
+            return e.getMessage();
+        } catch (Exception e) {
+            return e.getMessage();
         }
         return ui.getMessage();
     }
@@ -53,7 +62,4 @@ public class Ferb {
         fileHandler.writeContent(tasks);
     }
 
-    //public static void main(String[] args) {
-        //new Ferb("data/Ferb.txt").run();
-    //}
 }

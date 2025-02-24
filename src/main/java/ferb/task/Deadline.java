@@ -1,7 +1,10 @@
 package ferb.task;
 
+import ferb.exception.FerbException;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 /**
  * Represents a deadline task.
@@ -11,13 +14,21 @@ public class Deadline extends Task{
     private LocalDate deadline;
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy");
 
-    public Deadline(String description, String deadline) {
+    public Deadline(String description, String deadline) throws FerbException {
         this(false, description, deadline);
     }
 
-    public Deadline(boolean isDone, String description, String deadline){
+    public Deadline(boolean isDone, String description, String deadline) throws FerbException {
         super(isDone, description);
-        this.deadline = LocalDate.parse(deadline);
+        this.deadline = parseDate(deadline);
+    }
+
+    private LocalDate parseDate(String date) throws FerbException {
+        try {
+            return LocalDate.parse(date);
+        } catch (DateTimeParseException e) {
+            throw new FerbException("Invalid date format. Please use yyyy-mm-dd.");
+        }
     }
 
     /**
