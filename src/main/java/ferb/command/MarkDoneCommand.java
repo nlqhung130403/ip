@@ -2,6 +2,8 @@ package ferb.command;
 
 import ferb.task.Task;
 import ferb.tasklist.TaskList;
+import ferb.ui.Ui;
+import ferb.filehandler.FerbFileHandler;
 
 /**
  * Represents a command to mark a task as done based on its index.
@@ -9,8 +11,7 @@ import ferb.tasklist.TaskList;
 public class MarkDoneCommand extends Command {
     private int index;
 
-    public MarkDoneCommand(TaskList tasks, int index) {
-        super(tasks);
+    public MarkDoneCommand(int index) {
         this.index = index;
     }
 
@@ -18,10 +19,9 @@ public class MarkDoneCommand extends Command {
      * Executes the mark done command, marking the task as done and printing a confirmation message.
      */
     @Override
-    public void execute() {
+    public void execute(Ui ui, FerbFileHandler fileHandler, TaskList tasks) {
         Task task = tasks.get(index);
         task.markDone();
-        System.out.println("Nice! I have marked this task as done:");
-        System.out.println(task.displayDone() + task.taskDescription());
+        ui.showTaskMarkedDone(task);
     }
 }

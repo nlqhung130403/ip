@@ -1,6 +1,8 @@
 package ferb.command;
 
 import ferb.tasklist.TaskList;
+import ferb.ui.Ui;
+import ferb.filehandler.FerbFileHandler;
 
 /**
  * Represents a command that finds tasks based on a keyword in the task list.
@@ -8,8 +10,7 @@ import ferb.tasklist.TaskList;
 public class FindCommand extends Command {
     private String keyword;
 
-    public FindCommand(TaskList tasks, String keyword) {
-        super(tasks);
+    public FindCommand(String keyword) {
         this.keyword = keyword;
     }
 
@@ -17,9 +18,8 @@ public class FindCommand extends Command {
      * Executes the find command, finding tasks based on the keyword and printing them.
      */
     @Override
-    public void execute() {
+    public void execute(Ui ui, FerbFileHandler fileHandler, TaskList tasks) {
         TaskList foundTasks = tasks.find(keyword);
-        System.out.println("Here are the matching tasks in your list:");
-        System.out.println(foundTasks.toString());
+        ui.showMatchingTasks(foundTasks);
     }
 }

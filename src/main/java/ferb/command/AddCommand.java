@@ -2,6 +2,8 @@ package ferb.command;
 
 import ferb.task.Task;
 import ferb.tasklist.TaskList;
+import ferb.ui.Ui;
+import ferb.filehandler.FerbFileHandler;
 
 /**
  * Represents a command to add a task to the task list.
@@ -12,11 +14,9 @@ public class AddCommand extends Command{
     /**
      * Constructs an AddCommand with the specified task list and task.
      *
-     * @param tasks the task list to which the task will be added
      * @param task the task to be added
      */
-    public AddCommand(TaskList tasks, Task task) {
-        super(tasks);
+    public AddCommand(Task task) {
         this.task = task;
     }
 
@@ -24,9 +24,8 @@ public class AddCommand extends Command{
      * Executes the add command, adding the task to the task list and printing a confirmation message.
      */
     @Override
-    public void execute() {
-        this.tasks.add(task);
-        System.out.println("Got it. I've added this task:");
-        System.out.println("  " + task.toString());
+    public void execute(Ui ui, FerbFileHandler fileHandler, TaskList tasks) {
+        tasks.add(task);
+        ui.showTaskAdded(task);
     }
 }

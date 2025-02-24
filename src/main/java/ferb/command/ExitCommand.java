@@ -8,20 +8,14 @@ import ferb.ui.Ui;
  * Represents a command to exit the program.
  */
 public class ExitCommand extends Command{
-    private FerbFileHandler fileHandler;
-
-    public ExitCommand(TaskList tasks, FerbFileHandler fileHandler) {
-        super(tasks);
-        this.fileHandler = fileHandler;
-    }
 
     /**
      * Executes the exit command, saving the task list to a file and exiting the application.
      */
     @Override
-    public void execute() {
-        Ui.exit();
+    public void execute(Ui ui, FerbFileHandler fileHandler, TaskList tasks) {
         fileHandler.writeContent(tasks);
+        ui.showGoodbye();
     }
 
     /**
