@@ -12,7 +12,7 @@ import ferb.filehandler.FerbFileHandler;
 public class DeleteCommand extends Command{
     private int index;
 
-    public DeleteCommand(TaskList tasks, int index) {
+    public DeleteCommand(int index) {
         this.index = index;
     }
 
@@ -21,7 +21,7 @@ public class DeleteCommand extends Command{
      */
     @Override
     public void execute(Ui ui, FerbFileHandler fileHandler, TaskList tasks) {
-        Task task = tasks.remove(index - 1);
+        Task task = tasks.remove(index);
         ui.showTaskDeleted(task);
     }
 }

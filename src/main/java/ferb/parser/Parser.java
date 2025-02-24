@@ -27,37 +27,113 @@ public class Parser {
      */
     public Command parse(String command) throws FerbException{
         if (command.equals("bye")) {
-            return new ExitCommand();
+            return processExitCommand();
         } else if (command.equals("list")) {
-            return new ListCommand();
-        } else if (command.contains("unmark")) {
-            int index = Integer.parseInt(command.substring(7, command.length())) - 1;
-            return new UnmarkDoneCommand(index);
-        } else if (command.contains("mark")) {
-            int index = Integer.parseInt(command.substring(5, command.length())) - 1;
-            return new MarkDoneCommand(index);
-        } else if (command.contains("todo")) {
-            return new AddCommand(new ToDo(command.substring(5, command.length())));
-        } else if (command.contains("deadline")) {
-            int i = command.indexOf("/by");
-            String deadline = command.substring(i + 4, command.length());
-            String description = command.substring(9, i - 1);
-            return new AddCommand(new Deadline(description, deadline));
-        } else if (command.contains("event")) {
-            int fi = command.indexOf("/from");
-            int ti = command.indexOf("/to");
-            String description = command.substring(6, fi - 1);
-            String startDate = command.substring(fi + 6, ti - 1);
-            String endDate = command.substring(ti + 4, command.length());
-            return new AddCommand(new Event(description, startDate, endDate));
-        } else if (command.contains("delete")) {
-            int index = Integer.parseInt(command.substring(7, command.length()));
-            return new DeleteCommand(this.tasks, index);
-        } else if (command.contains("find")) {
-            String keyword = command.substring(5, command.length());
-            return new FindCommand(keyword);
+            return processListCommand();
+        } else if (command.startsWith("unmark")) {
+            return processUnmarkCommand(command);
+        } else if (command.startsWith("mark")) {
+            return processMarkCommand(command);
+        } else if (command.startsWith("todo")) {
+            return processTodoCommand(command);
+        } else if (command.startsWith("deadline")) {
+            return processDeadlineCommand(command);
+        } else if (command.startsWith("event")) {
+            return processEventCommand(command);
+        } else if (command.startsWith("delete")) {
+            return processDeleteCommand(command);
+        } else if (command.startsWith("find")) {
+            return processFindCommand(command);
         } else {
-            throw new FerbException();
+            throw new FerbException("I'm so sorry! Command not supported!");
         }
     }
+
+    private Command processListCommand() {
+        return new ListCommand();
+    }
+
+    private Command processExitCommand() {
+        return new ExitCommand();
+    }
+
+    private Command processTodoCommand(String command) throws FerbException {
+        String description = ferbSubstring(command, 5, command.length());
+        if (description.isEmpty()) {
+            throw new FerbException("Description cannot be empty");
+        }
+        return new AddCommand(new ToDo(description));
+    }
+
+    private Command processDeadlineCommand(String command) throws FerbException {
+        int byIndex = command.indexOf("/by");
+        if (byIndex == -1) {
+            throw new FerbException("Deadline command must contain '/by'");
+        }
+        String description = ferbSubstring(command, 9, byIndex - 1);
+        String deadline = ferbSubstring(command, byIndex + 4, command.length());
+        if (description.isEmpty() || deadline.isEmpty()) {
+            throw new FerbException("Description and deadline cannot be empty");
+        }
+        return new AddCommand(new Deadline(description, deadline));
+    }
+
+    private Command processEventCommand(String command) throws FerbException {
+        int fromIndex = command.indexOf("/from");
+        int toIndex = command.indexOf("/to");
+        if (fromIndex == -1 || toIndex == -1) {
+            throw new FerbException("Event command must contain '/from' and '/to'");
+        }
+        String description = ferbSubstring(command, 6, fromIndex - 1);
+        String from = ferbSubstring(command, fromIndex + 6, toIndex - 1);
+        String to = ferbSubstring(command, toIndex + 4, command.length());
+        if (description.isEmpty() || from.isEmpty() || to.isEmpty()) {
+            throw new FerbException("Description, start date and end date cannot be empty");
+        }
+        return new AddCommand(new Event(description, from, to));
+    }
+
+    private Command processDeleteCommand(String command) throws FerbException {
+        int index = getTaskIndex(command, 7, command.length());
+        return new DeleteCommand(index);
+    }
+
+    private Command processFindCommand(String command) throws FerbException {
+        String keyword = ferbSubstring(command, 5, command.length());
+        return new FindCommand(keyword);
+    }
+
+    private Command processMarkCommand(String command) throws FerbException {
+        int index = getTaskIndex(command, 5, command.length());
+        return new MarkDoneCommand(index);
+    }
+
+    private Command processUnmarkCommand(String command) throws FerbException {
+        int index = getTaskIndex(command, 7, command.length());
+        return new UnmarkDoneCommand(index);
+    }
+
+    private String ferbSubstring(String command, int start, int end) throws FerbException {
+        try {
+            return command.substring(start, end).trim();
+        } catch (StringIndexOutOfBoundsException e) {
+            throw new FerbException("Please double check! Arguments cannot be empty");
+        }
+    }
+
+    private int getTaskIndex(String command, int start, int end) throws FerbException {
+        int index;
+        String stringIndex = ferbSubstring(command, start, end);
+        try {
+            index = Integer.parseInt(stringIndex) - 1;
+        } catch (NumberFormatException e) {
+            throw new FerbException("Invalid index for command");
+        }
+        if (index < 0 || index >= tasks.size()) {
+            throw new FerbException("Index out of range for command");
+        }
+        return index;
+    }
+
+
 }

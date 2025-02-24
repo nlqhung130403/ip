@@ -37,14 +37,10 @@ public class Ferb {
         try {
             Command c = this.parser.parse(input);
             c.execute(ui, fileHandler, tasks);
-        } catch (StringIndexOutOfBoundsException e) {
-            return "Wrong command format! Please double check.";
-        } catch (IndexOutOfBoundsException e) {
-            return "Invalid Index! Please try again.";
-        } catch (RuntimeException e) {
-            return "Wrong command format! Please try again.";
         } catch (FerbException e) {
-            return "Sorry! Command not supported!";
+            return e.getMessage();
+        } catch (Exception e) {
+            return e.getMessage();
         }
         return ui.getMessage();
     }
@@ -53,7 +49,4 @@ public class Ferb {
         fileHandler.writeContent(tasks);
     }
 
-    //public static void main(String[] args) {
-        //new Ferb("data/Ferb.txt").run();
-    //}
 }

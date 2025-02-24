@@ -1,5 +1,6 @@
 package ferb.tasklist;
 
+import ferb.exception.FerbException;
 import ferb.task.*;
 import java.util.ArrayList;
 
@@ -26,11 +27,19 @@ public class TaskList extends ArrayList<Task> {
                 this.add(new ToDo(isDone, description));
             } else if (type.equals("D")) {
                 String deadline = fields[3];
-                this.add(new Deadline(isDone, description, deadline));
+                try {
+                    this.add(new Deadline(isDone, description, deadline));
+                } catch (FerbException e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
             } else {
                 String from = fields[3];
                 String to = fields[4];
-                this.add(new Event(isDone, description, from, to));
+                try {
+                    this.add(new Event(isDone, description, from, to));
+                } catch (FerbException e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
             }
         }
     }

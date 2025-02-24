@@ -1,7 +1,10 @@
 package ferb.task;
 
+import ferb.exception.FerbException;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 /**
  * Represents an event task.
@@ -12,16 +15,23 @@ public class Event extends Task{
     private LocalDate endDate;
     private static final DateTimeFormatter DATEFORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy");
 
-    public Event(String description, String startDate, String endDate) {
+    public Event(String description, String startDate, String endDate) throws FerbException {
         this(false, description, startDate, endDate);
     }
 
-    public Event(boolean isDone, String description, String startDate, String endDate) {
+    public Event(boolean isDone, String description, String startDate, String endDate) throws FerbException {
         super(isDone, description);
-        this.startDate = LocalDate.parse(startDate);
-        this.endDate = LocalDate.parse(endDate);
+        this.startDate = parseDate(startDate);
+        this.endDate = parseDate(endDate);
     }
 
+    private LocalDate parseDate(String date) throws FerbException {
+        try {
+            return LocalDate.parse(date);
+        } catch (DateTimeParseException e) {
+            throw new FerbException("Invalid date format. Please use yyyy-mm-dd.");
+        }
+    }
     /**
      * Returns a string representation of the event task.
      *
