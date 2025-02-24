@@ -53,7 +53,7 @@ public class FerbFileHandler {
             for (Task task : tasks) {
                 String line = task.toSave();
                 writer.write(line);
-                writer.newLine();  // Add a newline after each line
+                writer.newLine();
             }
         } catch (IOException e) {
             e.printStackTrace();

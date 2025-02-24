@@ -26,11 +26,24 @@ public class Ferb {
         fileHandler = new FerbFileHandler(filePath);
         String content = fileHandler.readContent();
         if (!content.isEmpty()) {
-            tasks = new TaskList(content);
+            loadTasks(content);
         } else {
-            tasks = new TaskList();
+            loadTasks();
         }
         parser = new Parser(tasks, fileHandler);
+    }
+
+    private void loadTasks(String content) {
+        try {
+            tasks = new TaskList(content);
+        } catch (FerbException e) {
+            ui.showLoadingError();
+            loadTasks();
+        }
+    }
+
+    private void loadTasks() {
+        this.tasks = new TaskList();
     }
 
     public String getResponse(String input) {

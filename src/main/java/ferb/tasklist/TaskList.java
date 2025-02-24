@@ -10,43 +10,55 @@ import java.util.ArrayList;
  */
 public class TaskList extends ArrayList<Task> {
 
+
+    public TaskList() {
+        super();
+    }
+
     /**
      * Constructs a task list from the specified content.
      *
      * @param content the content of the task list
      */
-    public TaskList(String content) {
-        String[] tasks = content.split("\\R");
+    public TaskList(String content) throws FerbException {
+        String[] lines = content.split("\\R");
 
-        for (String task : tasks) {
-            String[] fields = task.split("\\|"); //escape special character
-            String type = fields[0];
-            boolean isDone = fields[1].equals("1") ? true : false;
-            String description = fields[2];
-            if (type.equals("T")) {
-                this.add(new ToDo(isDone, description));
-            } else if (type.equals("D")) {
-                String deadline = fields[3];
-                try {
-                    this.add(new Deadline(isDone, description, deadline));
-                } catch (FerbException e) {
-                    System.out.println("Error: " + e.getMessage());
-                }
+        for (String line : lines) {
+            String[] fields = line.split("\\|");
+
+            if (fields.length == 3) {
+                this.processTodo(fields);
+            } else if (fields.length == 4) {
+                this.processDeadline(fields);
+            } else if (fields.length == 5) {
+                this.processEvent(fields);
             } else {
-                String from = fields[3];
-                String to = fields[4];
-                try {
-                    this.add(new Event(isDone, description, from, to));
-                } catch (FerbException e) {
-                    System.out.println("Error: " + e.getMessage());
-                }
+                throw new FerbException("Invalid task format in file.");
             }
         }
     }
 
-    public TaskList() {
-        super();
+    private void processTodo(String[] fields) throws FerbException {
+        if (!fields[0].equals("T")) {
+            throw new FerbException("Invalid task format in file.");
+        }
+        this.add(new ToDo(fields[1].equals("1") ? true : false, fields[2]));
     }
+
+    private void processDeadline(String[] fields) throws FerbException {
+        if (!fields[0].equals("D")) {
+            throw new FerbException("Invalid task format in file.");
+        }
+        this.add(new Deadline(fields[1].equals("1") ? true : false, fields[2], fields[3]));
+    }
+
+    private void processEvent(String[] fields) throws FerbException {
+        if (!fields[0].equals("E")) {
+            throw new FerbException("Invalid task format in file.");
+        }
+        this.add(new Event(fields[1].equals("1") ? true : false, fields[2], fields[3], fields[4]));
+    }
+
 
     /**
      * Finds tasks that contain the specified keyword.
