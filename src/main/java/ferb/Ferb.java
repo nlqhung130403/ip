@@ -15,6 +15,7 @@ public class Ferb {
     private TaskList tasks;
     private FerbFileHandler fileHandler;
     private Parser parser;
+    private Ui ui = new Ui();
 
     /**
      * Constructs a Ferb object with the specified file path.
@@ -32,31 +33,27 @@ public class Ferb {
         parser = new Parser(tasks, fileHandler);
     }
 
-    /**
-     * Runs the Ferb application.
-     */
-    private void run(){
-        Ui.showWelcome();
-        boolean isExit = false;
-        while (!isExit) {
-            String command = Ui.readCommand();
-            try {
-                Command c = this.parser.parse(command);
-                c.execute();
-                isExit = c.isExit();
-            } catch (StringIndexOutOfBoundsException e) {
-                System.out.println("Wrong command format! Please double check.");
-            } catch (IndexOutOfBoundsException e) {
-                System.out.println("Invalid Index! Please try again.");
-            } catch (RuntimeException e) {
-                System.out.println("Wrong command format! Please try again.");
-            } catch (FerbException e) {
-                System.out.println("Sorry! Command not supported!");
-            }
+    public String getResponse(String input) {
+        try {
+            Command c = this.parser.parse(input);
+            c.execute(ui, fileHandler, tasks);
+        } catch (StringIndexOutOfBoundsException e) {
+            return "Wrong command format! Please double check.";
+        } catch (IndexOutOfBoundsException e) {
+            return "Invalid Index! Please try again.";
+        } catch (RuntimeException e) {
+            return "Wrong command format! Please try again.";
+        } catch (FerbException e) {
+            return "Sorry! Command not supported!";
         }
+        return ui.getMessage();
     }
 
-    public static void main(String[] args) {
-        new Ferb("data/Ferb.txt").run();
+    public void saveTasks() {
+        fileHandler.writeContent(tasks);
     }
+
+    //public static void main(String[] args) {
+        //new Ferb("data/Ferb.txt").run();
+    //}
 }

@@ -1,4 +1,5 @@
 T|0|run
-D|0|read book|2019-02-11
-T|0|read data
 T|0|read TV
+T|0|run
+T|0|run
+D|0|study|2019-02-19
