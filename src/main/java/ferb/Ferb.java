@@ -23,6 +23,7 @@ public class Ferb {
      * @param filePath the file path where the task list is stored
      */
     public Ferb(String filePath) {
+        assert filePath != null && !filePath.isEmpty() : "File path should not be null or empty";
         fileHandler = new FerbFileHandler(filePath);
         String content = fileHandler.readContent();
         if (!content.isEmpty()) {
@@ -34,6 +35,7 @@ public class Ferb {
     }
 
     private void loadTasks(String content) {
+        assert content != null : "Content should not be null";
         try {
             tasks = new TaskList(content);
         } catch (FerbException e) {
