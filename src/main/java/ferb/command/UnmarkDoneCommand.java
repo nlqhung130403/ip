@@ -11,6 +11,7 @@ public class UnmarkDoneCommand extends Command {
     private int index;
 
     public UnmarkDoneCommand(int index) {
+        assert index >= 0 : "Index should be non-negative";
         this.index = index;
     }
 
@@ -19,6 +20,7 @@ public class UnmarkDoneCommand extends Command {
      */
     @Override
     public void execute(Ui ui, FerbFileHandler fileHandler, TaskList tasks) {
+        assert index < tasks.size() : "Index should be within the size of the task list";
         Task task = tasks.get(this.index);
         task.unmarkDone();
         ui.showTaskUnmarkedDone(task);

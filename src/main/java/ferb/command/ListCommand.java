@@ -15,6 +15,10 @@ public class ListCommand extends Command {
      */
     @Override
     public void execute(Ui ui, FerbFileHandler fileHandler, TaskList tasks) {
-        ui.showTaskList(tasks);
+        if (tasks.isEmpty()) {
+            ui.showEmptyTaskList();
+        } else {
+            ui.showTaskList(tasks);
+        }
     }
 }

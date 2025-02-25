@@ -42,6 +42,10 @@ public class Ui {
         this.message = "Here are the tasks in your list:\n" + taskList;
     }
 
+    public void showEmptyTaskList() {
+        this.message = "You have no tasks in your list.";
+    }
+
     public void showMatchingTasks(TaskList taskList) {
         if (taskList.isEmpty()) {
             this.message = "You have no tasks in your list.";

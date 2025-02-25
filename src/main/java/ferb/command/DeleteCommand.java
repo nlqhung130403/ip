@@ -13,6 +13,7 @@ public class DeleteCommand extends Command{
     private int index;
 
     public DeleteCommand(int index) {
+        assert index >= 0: "Index should be non-negative";
         this.index = index;
     }
 
@@ -21,6 +22,7 @@ public class DeleteCommand extends Command{
      */
     @Override
     public void execute(Ui ui, FerbFileHandler fileHandler, TaskList tasks) {
+        assert index < tasks.size() : "Index should be within the size of the task list";
         Task task = tasks.remove(index);
         ui.showTaskDeleted(task);
     }
