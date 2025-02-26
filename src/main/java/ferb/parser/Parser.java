@@ -113,6 +113,10 @@ public class Parser {
         return new UnmarkDoneCommand(index);
     }
 
+    //private Command processSortCommand() {
+        //return new SortCommand();
+    //}
+
     private String ferbSubstring(String command, int start, int end) throws FerbException {
         try {
             return command.substring(start, end).trim();

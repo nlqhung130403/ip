@@ -72,4 +72,8 @@ public class Event extends Task{
     public String getFrom() {
         return this.startDate.format(DATEFORMAT);
     }
+
+    public LocalDate getStartDate() {
+        return this.startDate;
+    }
 }
