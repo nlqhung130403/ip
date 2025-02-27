@@ -71,7 +71,6 @@ Ferb is a powerful task manager designed to help users organize their tasks effi
 
 | Feature | Description | Command Format |
 |----------------------|--------------------------------------------|------------------------------|
-|----------------------|--------------------------------------------|
 | Adding a Todo | Adds a new task to your to-do list. | `todo <description>` |
 | Adding a Deadline | Adds a task with a deadline. | `deadline <description> /by <date time>` |
 | Adding an Event | Adds an event with start and end times. | `event <description> /from <start date time> /to <end date time>` |
