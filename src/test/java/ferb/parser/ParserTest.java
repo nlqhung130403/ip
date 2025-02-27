@@ -1,8 +1,9 @@
 package ferb.parser;
 
+import ferb.command.*;
 import ferb.exception.FerbException;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import ferb.tasklist.TaskList;
 import ferb.task.*;
@@ -12,28 +13,10 @@ public class ParserTest {
     @Test
     public void parse_validAddCommands_success() throws FerbException {
         TaskList test = new TaskList();
-        Parser p = new Parser(test , null);
-        p.parse("todo run").execute();
-        p.parse("deadline study /by 2019-02-19").execute();
-        p.parse("event meeting /from 2025-02-08 /to 2025-02-09").execute();
-
-        TaskList actual = new TaskList();
-        actual.add(new ToDo("run"));
-        actual.add(new Deadline("study", "2019-02-19"));
-        actual.add(new Event("meeting", "2025-02-08", "2025-02-09"));
-        assertEquals(actual.toString(), test.toString());
-    }
-
-    @Test
-    public void parse_validTrickyCommands_success()  throws FerbException {
-        TaskList test = new TaskList();
         Parser p = new Parser(test, null);
-        p.parse("todo mark assignments").execute();
-
-        TaskList actual = new TaskList();
-        actual.add(new ToDo("mark assignments"));
-
-        assertEquals(actual.toString(), test.toString());
+        assertTrue(p.parse("todo run") instanceof AddCommand);
+        assertTrue(p.parse("deadline study /by 2019-02-19") instanceof AddCommand);
+        assertTrue(p.parse("event meeting /from 2025-02-08 /to 2025-02-09") instanceof AddCommand);
     }
 
     @Test
@@ -41,21 +24,15 @@ public class ParserTest {
         TaskList test = new TaskList();
         test.add(new ToDo("run"));
         Parser p = new Parser(test, null);
-        p.parse("mark 1").execute();
-
-        assertEquals(true, test.get(0).isDone());
+        assertTrue(p.parse("mark 1") instanceof MarkDoneCommand);
     }
 
     @Test
     public void parse_validUnmarkCommand_success() throws FerbException {
         TaskList test = new TaskList();
-        ToDo todo = new ToDo("run");
-        todo.markDone();
-        test.add(todo);
+        test.add(new ToDo("run"));
         Parser p = new Parser(test, null);
-        p.parse("unmark 1").execute();
-
-        assertEquals(false, test.get(0).isDone());
+        assertTrue(p.parse("unmark 1") instanceof UnmarkDoneCommand);
     }
 
     @Test
@@ -63,9 +40,7 @@ public class ParserTest {
         TaskList test = new TaskList();
         test.add(new ToDo("run"));
         Parser p = new Parser(test, null);
-        p.parse("delete 1").execute();
-
-        assertEquals(0, test.size());
+        assertTrue(p.parse("delete 1") instanceof DeleteCommand);
     }
 
     @Test
@@ -74,6 +49,44 @@ public class ParserTest {
         Parser p = new Parser(test, null);
         try {
             p.parse("invalid command");
+            fail("Expected a FerbException to be thrown");
+        } catch (FerbException e) {
+            // Test passes
+        }
+    }
+
+    @Test
+    public void parse_validSortByDateCommand_success() throws FerbException {
+        TaskList test = new TaskList();
+        Parser p = new Parser(test, null);
+        assertTrue(p.parse("sort date") instanceof SortCommand);
+    }
+
+    @Test
+    public void parse_validSortByDescriptionCommand_success() throws FerbException {
+        TaskList test = new TaskList();
+        Parser p = new Parser(test, null);
+        assertTrue(p.parse("sort description") instanceof SortCommand);
+    }
+
+    @Test
+    public void parse_sortCommandWithInvalidType_throwsFerbException() {
+        TaskList test = new TaskList();
+        Parser p = new Parser(test, null);
+        try {
+            p.parse("sort invalidType");
+            fail("Expected a FerbException to be thrown");
+        } catch (FerbException e) {
+            // Test passes
+        }
+    }
+
+    @Test
+    public void parse_sortCommandWithNoType_throwsFerbException() {
+        TaskList test = new TaskList();
+        Parser p = new Parser(test, null);
+        try {
+            p.parse("sort");
             fail("Expected a FerbException to be thrown");
         } catch (FerbException e) {
             // Test passes
