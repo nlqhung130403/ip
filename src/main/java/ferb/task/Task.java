@@ -87,6 +87,11 @@ public class Task {
         return this.taskDescription().contains(keyword);
     }
 
+    /**
+     * Returns a boolean indicating whether the task is a todo task.
+     *
+     * @return true if the task is a todo task, false otherwise
+     */
     public boolean isTodo() {
         return false;
     }

@@ -91,10 +91,16 @@ public class TaskList extends ArrayList<Task> {
         return result.toString();
     }
 
+    /**
+     * Sorts the tasks in the list by their descriptions in lexicographical order.
+     */
     public void sortDescription() {
         this.sort((t1, t2) -> t1.taskDescription().compareTo(t2.taskDescription()));
     }
 
+    /**
+     * Sorts the tasks in the list chronologically by their deadline dates.
+     */
     public void sortDate() {
         quickSort(0, this.size() - 1);
     }

@@ -15,10 +15,27 @@ public class Event extends Task{
     private LocalDate endDate;
     private static final DateTimeFormatter DATEFORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy");
 
+    /**
+     * Constructs an Event task with the specified description, start date, and end date.
+     *
+     * @param description the description of the task
+     * @param startDate the start date of the task in yyyy-mm-dd format
+     * @param endDate the end date of the task in yyyy-mm-dd format
+     * @throws FerbException if the date format is invalid
+     */
     public Event(String description, String startDate, String endDate) throws FerbException {
         this(false, description, startDate, endDate);
     }
 
+    /**
+     * Constructs an Event task with the specified completion status, description, start date, and end date.
+     *
+     * @param isDone the completion status of the task
+     * @param description the description of the task
+     * @param startDate the start date of the task in yyyy-mm-dd format
+     * @param endDate the end date of the task in yyyy-mm-dd format
+     * @throws FerbException if the date format is invalid
+     */
     public Event(boolean isDone, String description, String startDate, String endDate) throws FerbException {
         super(isDone, description);
         this.startDate = parseDate(startDate);
@@ -56,7 +73,7 @@ public class Event extends Task{
     }
 
     /**
-     * Returns the end date of the event formatted as MMM dd yyyy.
+     * Returns the string representation of the end date formatted as MMM dd yyyy.
      *
      * @return the formatted end date of the event
      */
@@ -65,7 +82,7 @@ public class Event extends Task{
     }
 
     /**
-     * Returns the start date of the event formatted as MMM dd yyyy.
+     * Returns the string representation of the start date formatted as MMM dd yyyy.
      *
      * @return the formatted start date of the event
      */
@@ -73,6 +90,11 @@ public class Event extends Task{
         return this.startDate.format(DATEFORMAT);
     }
 
+    /**
+     * Returns the start date of the event.
+     *
+     * @return the start date of the event
+     */
     public LocalDate getStartDate() {
         return this.startDate;
     }

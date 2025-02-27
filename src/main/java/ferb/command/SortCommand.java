@@ -4,6 +4,9 @@ import ferb.filehandler.FerbFileHandler;
 import ferb.tasklist.TaskList;
 import ferb.ui.Ui;
 
+/**
+ * Represents a command to sort the task list.
+ */
 public class SortCommand extends Command{
     String type;
 

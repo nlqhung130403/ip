@@ -14,14 +14,30 @@ public class Deadline extends Task{
     private LocalDate deadline;
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy");
 
+    /**
+     * Constructs a Deadline task with the specified description and deadline.
+     *
+     * @param description the description of the task
+     * @param deadline the deadline of the task in yyyy-mm-dd format
+     * @throws FerbException if the date format is invalid
+     */
     public Deadline(String description, String deadline) throws FerbException {
         this(false, description, deadline);
     }
 
+    /**
+     * Constructs a Deadline task with the specified completion status, description, and deadline.
+     *
+     * @param isDone the completion status of the task
+     * @param description the description of the task
+     * @param deadline the deadline of the task in yyyy-mm-dd format
+     * @throws FerbException if the date format is invalid
+     */
     public Deadline(boolean isDone, String description, String deadline) throws FerbException {
         super(isDone, description);
         this.deadline = parseDate(deadline);
     }
+
 
     private LocalDate parseDate(String date) throws FerbException {
         try {
@@ -61,6 +77,11 @@ public class Deadline extends Task{
         return "D|" + super.toSave() + "|" + this.deadline;
     }
 
+    /**
+     * Returns the deadline date.
+     *
+     * @return the deadline date
+     */
     public LocalDate getDeadline() {
         return deadline;
     }
