@@ -44,6 +44,8 @@ public class Parser {
             return processDeleteCommand(command);
         } else if (command.startsWith("find")) {
             return processFindCommand(command);
+        } else if (command.startsWith("sort")) {
+            return processSortCommand(command);
         } else {
             throw new FerbException("I'm so sorry! Command not supported!");
         }
@@ -113,9 +115,17 @@ public class Parser {
         return new UnmarkDoneCommand(index);
     }
 
-    //private Command processSortCommand() {
-        //return new SortCommand();
-    //}
+    private Command processSortCommand(String command) throws FerbException{
+        String[] splitCommand = command.split(" ");
+        if (splitCommand.length != 2) {
+            throw new FerbException("Please double check! Sort command should have exactly one type");
+        }
+        String sortType = splitCommand[1];
+        if (!sortType.equals("date") && !sortType.equals("description")) {
+            throw new FerbException("Please double check! Sort type should be either 'date' or 'description'");
+        }
+        return new SortCommand(sortType);
+    }
 
     private String ferbSubstring(String command, int start, int end) throws FerbException {
         try {

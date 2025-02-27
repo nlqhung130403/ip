@@ -95,50 +95,33 @@ public class TaskList extends ArrayList<Task> {
         this.sort((t1, t2) -> t1.taskDescription().compareTo(t2.taskDescription()));
     }
 
-    public TaskList sort(){
-        return this.sortDate(0, this.size() - 1);
+    public void sortDate() {
+        quickSort(0, this.size() - 1);
     }
 
-    public TaskList sortDate(int start, int end){
-        if (start >= end) {
-            TaskList tl = new TaskList();
-            tl.add(this.get(start));
-            return tl;
+    private void quickSort(int low, int high) {
+        if (low < high) {
+            int pi = partition(low, high);
+            quickSort(low, pi - 1);
+            quickSort(pi + 1, high);
         }
+    }
 
-        int mid = (start + end)/2;
-        TaskList firstHalf = this.sortDate(start, mid);
-        TaskList secondHalf = this.sortDate(mid + 1, end);
-
-        int pointer1 = 0;
-        int pointer2 = 0;
-
-        TaskList tl = new TaskList();
-
-        while (pointer1 < firstHalf.size() && pointer2 < secondHalf.size()) {
-            Task t1 = firstHalf.get(pointer1);
-            Task t2 = secondHalf.get(pointer2);
-            int compared = compareDates(t1, t2);
-            if (compared <= 0) {
-                tl.add(t1);
-                pointer1++;
-            } else if (compared > 0) {
-                tl.add(t2);
-                pointer2++;
+    private int partition(int low, int high) {
+        Task pivot = this.get(high);
+        int i = low - 1;
+        for (int j = low; j < high; j++) {
+            if (compareDates(this.get(j), pivot) <= 0) {
+                i++;
+                Task temp = this.get(i);
+                this.set(i, this.get(j));
+                this.set(j, temp);
             }
         }
-
-        while (pointer1 < firstHalf.size()) {
-            tl.add(firstHalf.get(pointer1));
-            pointer1++;
-        }
-
-        while(pointer2 < secondHalf.size()) {
-            tl.add(secondHalf.get(pointer2));
-            pointer2++;
-        }
-
-        return tl;
+        Task temp = this.get(i + 1);
+        this.set(i + 1, this.get(high));
+        this.set(high, temp);
+        return i + 1;
     }
 
     private int compareDates(Task t1, Task t2) {
@@ -157,37 +140,10 @@ public class TaskList extends ArrayList<Task> {
         } else if (t1 instanceof Deadline) {
             d1 = ((Deadline) t1).getDeadline();
             d2 = ((Event) t2).getStartDate();
-        } else{
+        } else {
             d1 = ((Event) t1).getStartDate();
             d2 = ((Deadline) t2).getDeadline();
         }
         return d1.compareTo(d2);
     }
-
-    public static void main(String[] args) throws FerbException {
-        TaskList taskList = new TaskList();
-        taskList.add(new Deadline("Submit assignment", "2023-12-01"));
-        taskList.add(new Event("Conference", "2023-11-20", "2023-11-22"));
-        taskList.add(new Deadline("Pay bills", "2023-11-15"));
-        taskList.add(new Event("Vacation", "2023-12-05", "2023-12-10"));
-        taskList.add(new ToDo("Buy groceries"));
-        taskList.add(new ToDo("Read a book"));
-        taskList.add(new ToDo("Exercise"));
-        taskList.add(new ToDo("Call a friend"));
-        taskList.add(new ToDo("Clean the house"));
-        taskList.add(new Deadline("Project presentation", "2023-12-10"));
-        taskList.add(new Event("Team meeting", "2023-11-25", "2023-11-25"));
-        taskList.add(new Deadline("Doctor appointment", "2023-11-30"));
-        taskList.add(new Event("Workshop", "2023-12-02", "2023-12-03"));
-
-        System.out.println("Before sorting:");
-        System.out.println(taskList);
-
-        TaskList sorted = taskList.sort();
-
-        System.out.println("After sorting:");
-        System.out.println(sorted);
-    }
-
-
 }

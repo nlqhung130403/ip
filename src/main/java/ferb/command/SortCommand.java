@@ -16,15 +16,12 @@ public class SortCommand extends Command{
      */
     @Override
     public void execute(Ui ui, FerbFileHandler fileHandler, TaskList tasks) {
-        tasks.sort();
-        //ui.showTaskSorted();
-    }
-
-    private void sortDescription(TaskList tasks) {
-        tasks.sortDescription();
-    }
-
-    private void sortDate(TaskList tasks) {
-        //tasks.sortDate();
+        if (type.equals("description")) {
+            tasks.sortDescription();
+            ui.showSortedByDescription(tasks);
+        } else if (type.equals("date")) {
+            tasks.sortDate();
+            ui.showSortedByDate(tasks);
+        }
     }
 }
