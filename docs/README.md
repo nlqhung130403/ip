@@ -3,9 +3,25 @@
 ![Ferb UI](./Ui.png)
 
 ## Table of Contents
+- [Installation Guide](#installation-guide)
 - [Introduction](#introduction)
 - [Features](#features)
 - [Summary Table](#summary-table)
+
+## Installation Guide
+
+1. Ensure you have Java `17` or above installed on your computer.
+   **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
+
+2. Download the latest `.jar` file from [here](https://github.com/nlqhung130403/ip/releaseshttps://github.com/nlqhung130403/ip/releases).
+
+3. Copy the file to the folder you want to use as the *home folder* for Ferb.
+
+4. Open a command terminal, `cd` into the folder where you placed the jar file, and use the command:
+   ```sh
+   java -jar ferb.jar
+   ```
+   to run the application.
 
 ## Introduction
 Ferb is a powerful task manager designed to help users organize their tasks efficiently. With Ferb, users can add, track, sort, and manage their to-do lists, deadlines, and events using simple commands.
