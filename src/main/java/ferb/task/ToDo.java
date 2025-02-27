@@ -32,4 +32,9 @@ public class ToDo extends Task{
         return "T|" + super.toSave();
     }
 
+    @Override
+    public boolean isTodo() {
+        return true;
+    }
+
 }

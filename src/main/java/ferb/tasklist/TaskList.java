@@ -3,6 +3,7 @@ package ferb.tasklist;
 import ferb.exception.FerbException;
 import ferb.task.*;
 import java.util.ArrayList;
+import java.time.LocalDate;
 
 
 /**
@@ -88,5 +89,61 @@ public class TaskList extends ArrayList<Task> {
             result.append(i + 1).append(". ").append(this.get(i)).append("\n");
         }
         return result.toString();
+    }
+
+    public void sortDescription() {
+        this.sort((t1, t2) -> t1.taskDescription().compareTo(t2.taskDescription()));
+    }
+
+    public void sortDate() {
+        quickSort(0, this.size() - 1);
+    }
+
+    private void quickSort(int low, int high) {
+        if (low < high) {
+            int pi = partition(low, high);
+            quickSort(low, pi - 1);
+            quickSort(pi + 1, high);
+        }
+    }
+
+    private int partition(int low, int high) {
+        Task pivot = this.get(high);
+        int i = low - 1;
+        for (int j = low; j < high; j++) {
+            if (compareDates(this.get(j), pivot) <= 0) {
+                i++;
+                Task temp = this.get(i);
+                this.set(i, this.get(j));
+                this.set(j, temp);
+            }
+        }
+        Task temp = this.get(i + 1);
+        this.set(i + 1, this.get(high));
+        this.set(high, temp);
+        return i + 1;
+    }
+
+    private int compareDates(Task t1, Task t2) {
+        if (t1.isTodo()) {
+            return -1;
+        } else if (t2.isTodo()) {
+            return 1;
+        }
+        LocalDate d1, d2;
+        if (t1 instanceof Deadline && t2 instanceof Deadline) {
+            d1 = ((Deadline) t1).getDeadline();
+            d2 = ((Deadline) t2).getDeadline();
+        } else if (t1 instanceof Event && t2 instanceof Event) {
+            d1 = ((Event) t1).getStartDate();
+            d2 = ((Event) t2).getStartDate();
+        } else if (t1 instanceof Deadline) {
+            d1 = ((Deadline) t1).getDeadline();
+            d2 = ((Event) t2).getStartDate();
+        } else {
+            d1 = ((Event) t1).getStartDate();
+            d2 = ((Deadline) t2).getDeadline();
+        }
+        return d1.compareTo(d2);
     }
 }

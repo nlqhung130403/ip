@@ -54,4 +54,20 @@ public class Ui {
         }
     }
 
+    public void showSortedByDescription(TaskList taskList) {
+        if (taskList.isEmpty()) {
+            this.message = "You have no tasks in your list.";
+        } else {
+            this.message = "Here are the tasks in your list sorted by descriptions:\n" + taskList;
+        }
+    }
+
+    public void showSortedByDate(TaskList tasklist) {
+        if (tasklist.isEmpty()) {
+            this.message = "You have no tasks in your list.";
+        } else {
+            this.message = "Here are the tasks in your list sorted by date:\n" + tasklist;
+        }
+    }
+
 }

@@ -87,5 +87,9 @@ public class Task {
         return this.taskDescription().contains(keyword);
     }
 
+    public boolean isTodo() {
+        return false;
+    }
+
 
 }
